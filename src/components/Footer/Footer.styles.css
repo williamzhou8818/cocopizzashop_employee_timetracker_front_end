@@ -1,0 +1,8 @@
+.Footer {
+    height: 6vh;
+    line-height: 6vh;
+    background-color: black;
+    color: white;
+    padding-left: 30px;
+    z-index: 1;
+}

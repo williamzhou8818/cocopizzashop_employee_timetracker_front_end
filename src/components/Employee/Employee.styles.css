@@ -1,0 +1,33 @@
+.Employee_List_Warper {
+    display: flex;
+    width: 100vw;
+    height: 60vh;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    /* overflow: scroll; */
+    
+}
+.Employee_Card {
+    flex:1;
+    text-align: center;
+    height: 120px;
+    padding: 15px 15px;
+    margin: 45px 10px;
+    border: 1px solid rgb(0, 0, 0);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+.Employee_Button  {
+    margin-top: 10px;
+}
+.MuiButtonBase-root{
+    width: 154px;
+}
+
+.Employee_Clock {
+    margin: auto;
+    padding: auto;
+    width: 152px;
+    text-align: center;
+    
+}

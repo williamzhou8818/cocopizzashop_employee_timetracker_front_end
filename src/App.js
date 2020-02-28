@@ -1,24 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
+import {Route, Switch } from 'react-router-dom';
+
 import './App.css';
+
+import Employee from './components/Employee/Employee.component';
+import AdminComponent from './components/Admin/Admin.component';
+import Footer from './components/Footer/Footer.component';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="App_Container">
+      <header className="App_Header">
+        COCO PIZZA SHOP
       </header>
+      <main className="App_Main">  
+          
+          <Switch>
+            <Route exact path='/'  component={Employee} />
+            <Route       path='/admin'  component={AdminComponent} />
+          </Switch>
+      </main>
+      <Footer/>
     </div>
   );
 }
