@@ -6,6 +6,7 @@ import './App.css';
 import Employee from './components/Employee/Employee.component';
 import AdminComponent from './components/Admin/Admin.component';
 import Footer from './components/Footer/Footer.component';
+import Sales from './components/Sales/Sales.component';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Switch>
             <Route exact path='/'  component={Employee} />
             <Route       path='/admin'  component={AdminComponent} />
+            <Route       path='/sales'  component={Sales} />
           </Switch>
       </main>
       <Footer/>

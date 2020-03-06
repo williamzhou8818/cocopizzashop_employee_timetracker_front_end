@@ -13,6 +13,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { DATETIME } from 'mysql2/lib/constants/types';
 
 const useStyles = makeStyles({
     table: {
@@ -97,11 +98,12 @@ const AdminComponent = () => {
     useEffect(() => {
         axios.get('http://localhost:5000/api/admin')
             .then(res => {
-              
+                //console.log(res.data)
                 let _ResData = res.data;
                 let _NewDashboard = [];
                  _ResData.forEach(data => {
                     let dataWorkeHour = data.work_hours;
+                    if (dataWorkeHour == 0) return null; 
                     let hoursMinutes = dataWorkeHour.split(/[.:]/);
                     let hours = parseInt(hoursMinutes[0], 10);
                     let minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
@@ -125,7 +127,7 @@ const AdminComponent = () => {
                 setAdminDashboard(_NewDashboard)
 
          // eslint-disable-next-line
-    },[]);
+    }, []);
 
 
 
@@ -135,7 +137,7 @@ const AdminComponent = () => {
 
     const onPayRollClicked = (index_id) => {
          // SET Click ITEM DATA 
-        // console.log(adminDashboard[index_id])
+        console.log(adminDashboard[index_id])
 
          setSelectedData({
             employee_id: adminDashboard[index_id].employee_id,
@@ -146,6 +148,8 @@ const AdminComponent = () => {
   
          
          let _payroll_list;
+         let _savePaidLogs;
+
          _payroll_list = {
             clock_in_time: adminDashboard[index_id].clock_in_time,
             clock_out_time: adminDashboard[index_id].clock_out_time,
@@ -153,6 +157,20 @@ const AdminComponent = () => {
             data: adminDashboard[index_id].date,
             dayilyPay: DayilyPay
          }
+
+         _savePaidLogs = {
+            employee_id: adminDashboard[index_id].employee_id,
+            employee_name: adminDashboard[index_id].employee_name,
+            working_date: moment(adminDashboard[index_id].date).format("MMM Do YY"),
+            clock_in_time: adminDashboard[index_id].clock_in_time,
+            clock_out_time: adminDashboard[index_id].clock_out_time,
+            daily_paid: DayilyPay,
+            ref_payrolls_pay_on_date: moment(Date()).format("MMM Do YY"),
+         }
+         // save to database is_paid_logs
+         axios.post('http://localhost:5000/api/ispaidlogs', _savePaidLogs)
+              .then(res => console.log(res))
+
 
         
         let day_total = [];
@@ -174,7 +192,7 @@ const AdminComponent = () => {
             weeklyWorkingHour += working_hour_total[i];
         }  
        // console.log(weeklyWorkingHour)
-        
+
        
          setPayRollList([...payRollList, _payroll_list]);
 
@@ -183,6 +201,7 @@ const AdminComponent = () => {
          setTotalWeeklyPay(weeklyTotalPay);
         //  setTotalWeeklyWorkingHours(weeklyTotalWorkHour);
          setTotalWeeklyWorkingHours(weeklyWorkingHour);
+         
 
     }
 
@@ -193,7 +212,9 @@ const AdminComponent = () => {
             employee_name: selectedData.name,
             hour_rate: selectedData.hour_rate,
             total_hours_worked:totalWeeklyWorkingHours,
-            total_weekly_paid: totalWeeklyPay
+            total_weekly_paid: totalWeeklyPay,
+            paid_on_date: moment(Date()).format("MMM Do YY")
+
         }
 
         axios.post('http://localhost:5000/api/payrolls', PayRollTotal)
@@ -201,12 +222,12 @@ const AdminComponent = () => {
             .catch((err) => console.log(err))
 
 
-       console.log('save payroll clicked ' +  PayRollTotal.employee_id )
-       console.log('save payroll clicked ' +  PayRollTotal.employee_name )
-       console.log('save payroll clicked ' +  PayRollTotal.total_hours_worked )
-       console.log('save payroll clicked ' +  PayRollTotal.total_weekly_pay )
-       console.log('save payroll clicked ' +  PayRollTotal.is_paid_done )
-       console.log('save payroll clicked ' +  PayRollTotal.date_of_paid )
+    //    console.log('save payroll clicked ' +  PayRollTotal.employee_id )
+    //    console.log('save payroll clicked ' +  PayRollTotal.employee_name )
+    //    console.log('save payroll clicked ' +  PayRollTotal.total_hours_worked )
+    //    console.log('save payroll clicked ' +  PayRollTotal.total_weekly_pay )
+    //    console.log('save payroll clicked ' +  PayRollTotal.is_paid_done )
+    //    console.log('save payroll clicked ' +  PayRollTotal.date_of_paid )
    }
 
 

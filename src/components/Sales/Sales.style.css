@@ -1,0 +1,130 @@
+.product_card {
+    display: flex;
+    flex: 3;
+    flex-wrap: wrap;
+    border:1px sold black;
+    align-content: space-between;
+    justify-items: center;
+
+}
+.product_card_wraper {
+    border: 0.1px solid rgb(192, 192, 192);
+    max-width:  210px;
+    height: 240px;
+    margin: 0px 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+.product_img {
+    overflow: hidden;
+}
+.product_title {
+    background-color: rgba(0, 0, 0, 0.836);
+    color: white;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 600;    
+    padding: 8px 5px;
+    margin-top: -5px;
+    z-index: 1;
+}
+.extra_button {
+    display: flex;
+    text-align: left;
+    margin: 0 0;
+    padding: 6px 2px;
+    background-color: black;
+    justify-content: space-between;
+}
+.extra_button button {
+   width: 48px;
+   height: 20px;
+   background-color: white;
+   margin-left:6px;
+   margin-top: 1px;
+
+}
+.product_selections {
+    color: rgb(255, 255, 255);
+    text-align: center;
+    height: 35px;
+    font-weight: 500;
+    line-height: 35px;
+    border-top: 1px solid rgba(241, 241, 241, 0.288);
+    border-left: 1px solid rgba(255, 255, 255, 0.692);
+    border-right: 1px solid rgba(78, 78, 78, 0.692);
+    border-bottom: 1px solid rgba(240, 240, 240, 0.466);
+
+    background-color: rgb(58, 58, 58);
+    cursor: pointer;
+}
+.toppings_button button {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    line-height: 20px;
+    font-weight: 700;
+    background-color: black;
+    color: white;
+    
+}  
+.toppings_button input {
+    width: 50px;
+    height: 20px;
+    font-size: 20px;
+    text-align: center;
+    line-height: 20px;
+    font-weight: 700;
+
+    
+}   
+
+
+.pos_view_wraper {
+    display: flex;
+    align-content: space-between;
+    justify-items: center;
+
+
+}
+
+.cart_item_list {
+    flex: 1;
+    width: 30%;
+    height: 80vh;
+    text-align: left;
+    padding-left: 5px;
+    border-left: 2px solid black;
+    margin-top: 5px;
+}
+.cart_item_list_title {
+    display: flex;
+    padding: 6px 6px 10px 6px;
+    font-size: 18px;
+    font-weight: 500;
+}
+.cart_item_sub_title {
+    display: flex;
+    padding: 0px 6px;
+    font-size: 14px;
+    font-weight: 300;
+}
+.show_charge {
+    position: absolute;
+    top: 83vh;
+    width: 220px;
+    height: 45px;
+    z-index: 9999;
+    border: 2px solid black;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 4px 25.5px;
+    line-height: 45px;
+}
+.show_charge p {
+  font-size: 20px;
+  font-weight: 700;
+  margin-left: 5px;
+}
+hr {
+    background-color: rgba(110, 110, 110, 0.658)    ;
+}

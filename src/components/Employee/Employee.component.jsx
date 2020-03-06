@@ -109,7 +109,10 @@ export default () => {
 
             axios.post('http://localhost:5000/api/clock_in_tracking_log', saveTimeTrackingLogs)
                 .then((res)=>{
+                    console.log('memony test ing' + res.data.employee_id )
+
                     axios.put(`http://localhost:5000/api/employee/${res.data.employee_id}`)
+
                         .then(()=> {window.location.replace("http://localhost:3000/");
                     })
                 
@@ -136,6 +139,8 @@ export default () => {
             }
             axios.post('http://localhost:5000/api/clock_out_tracking_log', saveClockOutTimeTrackingLogs)
                 .then((res)=>{
+                    console.log('memony test ing' + res.data.employee_id )
+
                     axios.put(`http://localhost:5000/api/employee/clockout/${res.data.employee_id}`)
                         .then(()=> {
                             setTimeout(() => {
