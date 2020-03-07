@@ -128,3 +128,32 @@
 hr {
     background-color: rgba(110, 110, 110, 0.658)    ;
 }
+
+.MuiTypography-body1 {
+    font-size: 1.5rem !important;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0.00938em;
+}
+
+.MuiInputBase-input {
+    font: inherit;
+    color: currentColor;
+    width: 100%;
+    border: 0;
+    height: 1.1875em;
+    margin: 0;
+    /* display: block; */
+    /* padding: 6px 0 7px; */
+    /* min-width: 0; */
+    font-size: 45px !important;
+    background: none;
+    box-sizing: content-box;
+    animation-name: mui-auto-fill-cancel;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* #scroll-dialog-title {
+    font-size: 1.5rem !important;
+} */

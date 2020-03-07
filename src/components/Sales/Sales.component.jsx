@@ -89,6 +89,7 @@ const Sales = () => {
     ]);
     const [totalCharges, setTotalCharges] = useState([]);
     const [totalCharge, setTotalCharge] = useState(0);
+    const [inputCash, setInputCash] = useState(null);
 
     useEffect(() => {
         axios.get('http://localhost:5000/api/products').then(res => {
@@ -373,7 +374,26 @@ const Sales = () => {
     }
     const handleClickCloseCharge = () => {
         setOpenChargeModle(false);
-    }
+    }   
+
+    //Start PAY BUTTON
+    const handleClickPays = (cartItems, totalCharges, recived_money, ChangeMoney) => {
+        let _Orders = {
+            cartItems: cartItems,
+            totalCharges: totalCharges,
+            recived_money: recived_money,
+            ChangeMoney: ChangeMoney,
+            isPaid: true
+        }
+        console.log(_Orders);
+       // setOpenChargeModle(false);
+       //OPEN CASH DRAW and Clear cart and clear input price 
+       setCartItems([]);
+       setTotalCharge(0.00)
+       //setInputCash(null)
+
+    } //END
+
    /**open model */
    
 
@@ -552,7 +572,7 @@ const Sales = () => {
           <Button onClick={handleClickCloseCharge} color="primary">
             Back
           </Button>
-          <Button onClick={handleClickCloseCharge} color="primary">
+          <Button onClick={() => handleClickPays(cartItems, totalCharge.toFixed(2), inputCash, (inputCash - totalCharge).toFixed(2) ) } color="primary">
              $Pay
           </Button>
         </DialogActions>
@@ -562,18 +582,19 @@ const Sales = () => {
             ref={descriptionElementRef}
             tabIndex={-1}
           >
-            <h2>Total: $50.00</h2>
-            <h2>
+            <h1>Total: ${totalCharge.toFixed(2)}</h1>
+            <h1>
                 Cash:  <FormControl fullWidth className={classes.margin} variant="filled">
                         <InputLabel htmlFor="filled-adornment-amount"></InputLabel>
                         <FilledInput
                             id="filled-adornment-amount"
-                           
+                            value={inputCash}
+                            onChange={(e) => setInputCash(e.target.value)}
                             startAdornment={<InputAdornment position="start">$</InputAdornment>}
                         />
                         </FormControl>
-            </h2>
-            <h2>Changes: ${`0.00`}</h2>
+            </h1>
+            <h1>Changes: ${(inputCash - totalCharge).toFixed(2) }</h1>
           </DialogContentText>
         </DialogContent>
     </Dialog>
