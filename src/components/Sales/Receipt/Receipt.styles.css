@@ -1,0 +1,59 @@
+.receipt_main_wraper {
+  
+    padding: 10% 25%;
+    text-align: left;
+   
+}
+.receipt_wraper {
+    max-width: 180mm;
+    min-height: 100mm;
+    border: 0.09px solid black;
+    padding: 20px 5px;
+}
+.receipt_back_button {
+    width: 100px;
+    height: 35px;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    margin-left: 0;
+}
+
+.receipt_header {
+    text-align: left;
+    padding: 10px 15px;
+    font-size: 13px;
+}
+
+hr {
+    margin: 30px  0px;
+}
+.receipt_order_desc{
+    text-align: left;
+    padding: 10px 15px;
+    
+
+}
+.receipt_item_title {
+    display: flex;
+    text-align: left;
+    justify-content:space-between;
+
+}
+.receipt_order_desc span {
+    font-size: 11px;
+}
+.receipt_total_warper {
+    padding: 10px 15px;
+}
+.reccipt_total {
+    display: flex;
+    text-align: left;
+    justify-content:space-between;
+
+}
+
+footer {
+    padding: 20px 15px;
+}

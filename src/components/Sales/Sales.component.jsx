@@ -1,4 +1,8 @@
 import React, {useEffect, useState}  from 'react';
+import { withRouter } from "react-router-dom";
+
+import moment from 'moment';
+
 import axios from 'axios';
 
 import './Sales.style.css';
@@ -26,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     },
    
   }));
-const Sales = () => { 
+const Sales = (props) => { 
 
     const classes = useStyles();
 
@@ -52,6 +56,11 @@ const Sales = () => {
                 to += array[i]
             }
             setTotalCharge(to)
+        }
+        if (totalCartItems) {
+            let cartItemTotal = 0;
+            cartItemTotal = totalCartItems.reduce((x, y) =>  {return +x + +y}, 0);
+            setTotalCartItem(cartItemTotal)
         }
 
       }, [open]);
@@ -89,6 +98,8 @@ const Sales = () => {
     ]);
     const [totalCharges, setTotalCharges] = useState([]);
     const [totalCharge, setTotalCharge] = useState(0);
+    const [totalCartItems, setTotalCartItems] = useState([]);
+    const [totalCartItem, setTotalCartItem] = useState(0);
     const [inputCash, setInputCash] = useState(null);
 
     useEffect(() => {
@@ -294,7 +305,11 @@ const Sales = () => {
         let total_pizza_unit_price = 0;
 
         let total_charges = [];
+       // let total_cart_item = [];
         
+        //total_cart_item.push(product.qty);
+        
+
        
         product.toppings.map((topping) => {
             if (topping.qty >= 2) {
@@ -327,7 +342,7 @@ const Sales = () => {
         
         // console.log(total_extra_toppping_price);
 
-         let _TotalCharges = total_extra_toppping_price + product.selection.price * product.qty;
+        let _TotalCharges = total_extra_toppping_price + product.selection.price * product.qty;
         
         
 
@@ -336,7 +351,7 @@ const Sales = () => {
 
         total_charges.push(_TotalCharges);
 
-
+      
         // console.log(product.product_title)
         // console.log(product.selection.price)
         // console.log(product.selection.size)
@@ -360,6 +375,11 @@ const Sales = () => {
 
 
         setCartItems([...cartItems, _newCartItem])
+        let _total_cart_item = []
+        _total_cart_item.push(_newCartItem.qty);
+        setTotalCartItems([...totalCartItems,_total_cart_item])
+        
+    
 
         setOpen(false);
 
@@ -379,18 +399,24 @@ const Sales = () => {
     //Start PAY BUTTON
     const handleClickPays = (cartItems, totalCharges, recived_money, ChangeMoney) => {
         let _Orders = {
-            cartItems: cartItems,
-            totalCharges: totalCharges,
+            cart_items: cartItems,
+            total_charges: totalCharges,
             recived_money: recived_money,
-            ChangeMoney: ChangeMoney,
-            isPaid: true
+            change_money: ChangeMoney,
+            total_cart_item:  totalCartItem,
+            datetime_paid: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+            is_paid: true,
         }
+        axios.post('http://localhost:5000/api/orders', _Orders).then(()=>{});
         console.log(_Orders);
        // setOpenChargeModle(false);
        //OPEN CASH DRAW and Clear cart and clear input price 
        setCartItems([]);
-       setTotalCharge(0.00)
+       setTotalCharge(0.00);
+       setInputCash(0.00);
+       
        //setInputCash(null)
+       props.history.push("/receipt")
 
     } //END
 
@@ -403,6 +429,7 @@ const Sales = () => {
 
         <div className="pos_view_wraper">
               <div className="product_card">
+               
                     { products.map((product,index) => {
                         return (
                             
@@ -438,15 +465,17 @@ const Sales = () => {
                     }
                 </div>
                 <div className="cart_item_list">
-                    <p>Items ( {cartItems.length} )</p>
+                    {/* <p>Items ( {cartItems.length} )</p> */}
+                    <p>Items ( {totalCartItem} )</p>
+
+                    
                     <p></p>
                     { cartItems.map((cartItem, i) => {
                   
                         return (
                             <> 
                                  <div className="cart_item_list_title">  {i+1}) 
-                                        {cartItem.product_title} x 
-                                        {cartItem.qty} ... 
+                                        {cartItem.product_title} x {cartItem.qty} ( {cartItem.product_size} ) ... 
                                        <>
                                         {cartItem.total_pizza_unit_price ? (
                                             <div> ${cartItem.total_pizza_unit_price.toFixed(2)} </div>
@@ -454,7 +483,7 @@ const Sales = () => {
                                             <div> ${(cartItem.product_price * cartItem.qty).toFixed(2)} </div>
                                             )}
                                        </> 
-                                        / {cartItem.product_size}
+                                       
                                 </div>
                                 <div> {cartItem.extra_toppings.map(extra_top => {
                                     
@@ -527,7 +556,7 @@ const Sales = () => {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-         <DialogTitle id="scroll-dialog-title">{product.product_title} ${product.selection.price} _ {product.selection.size} <br/>
+         <DialogTitle id="scroll-dialog-title">{product.product_title} ( {product.selection.size} ) ${product.selection.price} <br/>
                 <div className="toppings_button">
                  <button type="button" onClick={() => subtracProductQty()} > - </button>
                             <input value={product.qty} />
@@ -584,15 +613,23 @@ const Sales = () => {
           >
             <h1>Total: ${totalCharge.toFixed(2)}</h1>
             <h1>
-                Cash:  <FormControl fullWidth className={classes.margin} variant="filled">
-                        <InputLabel htmlFor="filled-adornment-amount"></InputLabel>
-                        <FilledInput
-                            id="filled-adornment-amount"
-                            value={inputCash}
-                            onChange={(e) => setInputCash(e.target.value)}
-                            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                        />
-                        </FormControl>
+            <div className="quick_click_cash_icons_wraper">
+                        <button className="cash_icon_100" onClick={()=> setInputCash(100.00)}>$100</button>
+                        <button className="cash_icon_50"  onClick={()=> setInputCash(50.00)}>$50</button>
+                        <button className="cash_icon_20"  onClick={()=> setInputCash(20.00)}>$20</button>
+                        <button className="cash_icon_10"  onClick={()=> setInputCash(10.00)}>$10</button>
+                        <button className="cash_icon_5"   onClick={()=> setInputCash(5.00)}>$5</button>
+                </div>
+               
+                <FormControl fullWidth className={classes.margin} variant="filled">
+                    <InputLabel htmlFor="filled-adornment-amount"></InputLabel>
+                    <FilledInput
+                        id="filled-adornment-amount"
+                        value={(+inputCash).toFixed(2)}
+                        onChange={(e) => setInputCash(e.target.value)}
+                        startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                    />
+                </FormControl>
             </h1>
             <h1>Changes: ${(inputCash - totalCharge).toFixed(2) }</h1>
           </DialogContentText>
@@ -606,4 +643,4 @@ const Sales = () => {
 
 }
 
-export default Sales;
+export default withRouter(Sales);
